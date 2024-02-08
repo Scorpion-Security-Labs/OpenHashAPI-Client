@@ -78,7 +78,7 @@ First, create a configuration file at `~/.oha`:
     "server-port":"8080",
     "server-api-route":"/api",
     "client-username":"username",
-    "client-password":"password",
+    "client-password":"password"
 }
 ```
 

@@ -10,11 +10,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"ohaclient/internal/config"
-	"ohaclient/internal/models"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/Scorpion-Security-Labs/ohaclient/internal/config"
+	"github.com/Scorpion-Security-Labs/ohaclient/internal/models"
 )
 
 // PostRequest sends an HTTP POST request to the specified URL and route with the given data.

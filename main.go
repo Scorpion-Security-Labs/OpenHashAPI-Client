@@ -3,9 +3,9 @@ package main
 
 import (
 	"fmt"
-	"ohaclient/internal/api"
-	"ohaclient/internal/config"
-	"ohaclient/internal/models"
+	"github.com/Scorpion-Security-Labs/ohaclient/internal/api"
+	"github.com/Scorpion-Security-Labs/ohaclient/internal/config"
+	"github.com/Scorpion-Security-Labs/ohaclient/internal/models"
 	"os"
 )
 

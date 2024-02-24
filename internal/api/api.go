@@ -279,7 +279,7 @@ func SubmitFounds(url string, jwt string, alg string, infile string) error {
 // with the hashes read from the specified file.
 //
 // The function prints the found hashes and their plaintext values and returns any error that occurred.
-func SearchFounds(url string, jwt string, infile string) error {
+func SearchFounds(url string, jwt string, infile string, query string) error {
 	buf, err := os.Open(infile)
 	if err != nil {
 		return err
@@ -306,7 +306,8 @@ func SearchFounds(url string, jwt string, infile string) error {
 		return err
 	}
 
-	res, err := PostRequest(url, "/search", string(encjson), jwt)
+	fullPath := fmt.Sprintf("/search?%s", query)
+	res, err := PostRequest(url, fullPath, string(encjson), jwt)
 	if err != nil {
 		return err
 	}
@@ -316,7 +317,7 @@ func SearchFounds(url string, jwt string, infile string) error {
 
 	if body["found"] == "[]" {
 		fmt.Println("")
-	} else {
+	} else if body["found"] != nil {
 		for _, c := range body["found"].([]interface{}) {
 			a := c.(map[string]interface{})["algorithm"]
 			h := c.(map[string]interface{})["hash"]
@@ -324,6 +325,8 @@ func SearchFounds(url string, jwt string, infile string) error {
 
 			fmt.Println(fmt.Sprintf("%s | %s:%s", a, h, p))
 		}
+	} else {
+		fmt.Println(string(res))
 	}
 	return nil
 }

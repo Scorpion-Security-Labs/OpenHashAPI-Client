@@ -3,10 +3,11 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/Scorpion-Security-Labs/ohaclient/internal/api"
 	"github.com/Scorpion-Security-Labs/ohaclient/internal/config"
 	"github.com/Scorpion-Security-Labs/ohaclient/internal/models"
-	"os"
 )
 
 // OHAServerURL holds the URL for functions
@@ -85,10 +86,13 @@ func main() {
 		filepath, err := models.ValidateFileInputArgs(os.Args, 2)
 		config.CheckError(err)
 
+		query, err := models.ValidateQueryStringArgs(os.Args, 3)
+		config.CheckError(err)
+
 		jwt, err := api.ServerAuthenticate(OHAServerURL, configFile.ClientUsername, configFile.ClientPassword)
 		config.CheckError(err)
 
-		err = api.SearchFounds(OHAServerURL, jwt, filepath)
+		err = api.SearchFounds(OHAServerURL, jwt, filepath, query)
 		config.CheckError(err)
 	case "submit":
 		if len(os.Args) <= 3 {
@@ -243,7 +247,7 @@ func printUsage() {
 	fmt.Println(config.PrintColor("[+] Example Commands:", "yellow", "%s"))
 	fmt.Println(config.PrintColor("register:", "cyan", "%s"), "ohaclient register")
 	fmt.Println(config.PrintColor("manage:", "cyan", "%s"), "ohaclient manage UID")
-	fmt.Println(config.PrintColor("search:", "cyan", "%s"), "ohaclient search FILE")
+	fmt.Println(config.PrintColor("search:", "cyan", "%s"), "ohaclient search FILE [QUERY-STRING]")
 	fmt.Println(config.PrintColor("submit:", "cyan", "%s"), "ohaclient found ALGO FILE")
 	fmt.Println(config.PrintColor("health:", "cyan", "%s"), "ohaclient health")
 	fmt.Println(config.PrintColor("status:", "cyan", "%s"), "ohaclient status")

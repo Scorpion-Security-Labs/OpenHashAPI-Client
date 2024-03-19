@@ -158,7 +158,7 @@ func RegisterUser(url string, username string, password string) error {
 	return nil
 }
 
-// ManageUser sends a POST request to the /api/manage route of the specified
+// ManageUser sends a POST request to the /api/manage/permissions route of the specified
 // URL.
 //
 // The function prints the response body and returns any error that occured.
@@ -194,7 +194,7 @@ func ManageUser(url string, jwt string, uid string) error {
 		return err
 	}
 
-	res, err := PostRequest(url, "/manage", string(encjson), jwt)
+	res, err := PostRequest(url, "/manage/permissions", string(encjson), jwt)
 	if err != nil {
 		return err
 	}
@@ -412,6 +412,20 @@ func UpdateTargetPrivateList(url string, jwt string, listname string, infile str
 		return err
 	}
 
+	fmt.Println(string(res))
+	return nil
+}
+
+// RefreshGeneratedFile sends a GET request to the /api/manage/refresh/FILE route of the specified URL
+// FILE can be "masks", "rules", or "wordlist"
+//
+// The function prints the response body and returns any error that occurred.
+func RefreshGeneratedFile(url string, jwt string, file string) error {
+	fullPath := fmt.Sprintf("/manage/refresh/%s", file)
+	res, err := GetRequest(url, fullPath, jwt)
+	if err != nil {
+		return err
+	}
 	fmt.Println(string(res))
 	return nil
 }

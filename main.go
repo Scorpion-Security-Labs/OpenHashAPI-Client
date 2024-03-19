@@ -220,6 +220,21 @@ func main() {
 		err = api.UpdateTargetPrivateList(OHAServerURL, jwt, filename, listname)
 		config.CheckError(err)
 
+	case "refresh":
+		jwt, err := api.ServerAuthenticate(OHAServerURL, configFile.ClientUsername, configFile.ClientPassword)
+		config.CheckError(err)
+
+		if len(os.Args) <= 2 {
+			printUsage()
+			os.Exit(0)
+		}
+
+		filename, err := models.ValidateQueryStringArgs(os.Args, 2)
+		config.CheckError(err)
+
+		err = api.RefreshGeneratedFile(OHAServerURL, jwt, filename)
+		config.CheckError(err)
+
 	default:
 		printUsage()
 		os.Exit(0)
@@ -244,6 +259,7 @@ func printUsage() {
 	fmt.Println(config.PrintColor("lists:", "cyan", "%s"), "View or downloads the available lists on the OHA Server.")
 	fmt.Println(config.PrintColor("create:", "cyan", "%s"), "Create a new private list on the OHA Server.")
 	fmt.Println(config.PrintColor("update:", "cyan", "%s"), "Updates the target list on the OHA Server.")
+	fmt.Println(config.PrintColor("refresh:", "cyan", "%s"), "Refreshes the target generated file on the OHA Server.")
 	fmt.Println(config.PrintColor("[+] Example Commands:", "yellow", "%s"))
 	fmt.Println(config.PrintColor("register:", "cyan", "%s"), "ohaclient register")
 	fmt.Println(config.PrintColor("manage:", "cyan", "%s"), "ohaclient manage UID")
@@ -257,4 +273,5 @@ func printUsage() {
 	fmt.Println(config.PrintColor("lists:", "cyan", "%s"), "ohaclient lists or ohaclient lists LISTNAME")
 	fmt.Println(config.PrintColor("create:", "cyan", "%s"), "ohaclient create LISTNAME FILE")
 	fmt.Println(config.PrintColor("update:", "cyan", "%s"), "ohaclient update LISTNAME FILE")
+	fmt.Println(config.PrintColor("refresh:", "cyan", "%s"), "ohaclient refresh [Masks|Rules|Wordlist]")
 }

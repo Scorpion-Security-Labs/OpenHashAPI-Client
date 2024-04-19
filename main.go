@@ -257,4 +257,5 @@ func printUsage() {
 	fmt.Println(config.PrintColor("lists:", "cyan", "%s"), "ohaclient lists or ohaclient lists LISTNAME")
 	fmt.Println(config.PrintColor("create:", "cyan", "%s"), "ohaclient create LISTNAME FILE")
 	fmt.Println(config.PrintColor("update:", "cyan", "%s"), "ohaclient update LISTNAME FILE")
+	fmt.Println(config.PrintColor("refresh:", "cyan", "%s"), "ohaclient refresh [masks|rules|wordlist]")
 }
